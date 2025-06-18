@@ -7,6 +7,7 @@ import com.example.spring02_todolist.entity.TodoEntity;
 
 @Repository// 레포지토리로 사용할거라서 어노테이션으로 선언
 //<Entity, id의 객체타입(클래스)> 넣어야 한다!
+//Jpa의 기능을 쓰기 위해 JpaRepository 상속함. 
 public interface TodoRepository extends JpaRepository<TodoEntity, Integer> {
 
 }

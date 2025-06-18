@@ -1,0 +1,243 @@
+[1] ORM(Object-Relational Mapping)
+1. 객체지향 프로그래밍과 관계형 데이터베이스의 패러다임은 서로 다르기 때문에 불일치 문제가 발생한다.
+2. 따라서 객체와 관계형 데이터베이스 사이의 불일치 문제를 해결해 주는 역할로 ORM(Object-Relational Mapping)이 필요하며, JPA(Java Persistence API)가 바로 이런 ORM 프레임워크이다.
+3. Mybatis 는 SQL Mapper 이고 JPA는 ORM 기술이다. ORM과 SQL Mapper는 차이가 있다. 
+4. SQL 매퍼는 쿼리의 실행결과를 미리 지정하여 두고 이를 객체로 매핑하는 기술을 말한다. 
+5. 쿼리를 개발자가 직접 작성해야 하지요. 반면 ORM은 개발자가 쿼리에 관여하지 않는것이 기본이다. 
+6. 물론 복잡한 쿼리를 지원하기 위해 직접 쿼리를 날리는 방법을 제공한다.
+7. SQL Mapper는 쿼리 실행결과를 간편하게 객체에 담고싶다에서 시작한 기술이라면, 
+ORM은 객체지향 언어와 관계형 데이터베이스 사이의 차이를 해소, 개발자가 객체지향 코드만 신경쓰도록 하자는 데에서 시작한 기술로 
+객체지향언어(Java)와 관계형 데이터베이스를 연결하는 프로그래밍 기법입니다 
+8.ORM의 장점과 단점
+  장점1. SQL을 직접 작성하지 않고 사용하는 언어로 데이터베이스에 접근할 수 있다.
+  장점2. 객체지향적으로 코드를 작성할 수 있기 때문에 비즈니스 로직에만 집중할 수 있다.
+  장점3. 데이터베이스 시스템이 추상화되어 있기 때문에 MySQL에서 PostgreSQL로 전환한다고 해도 추가로 드는 작업이 거의 없습니다.
+         즉, 데이터베이스 시스템에 대한 종속성이 줄어듭니다.
+  장점4. 매핑하는 정보가 명확하기 때문에 ERD에 대한 의존도를 낮출 수 있고 유지보수할때 유리합니다.
+  단점1. 프로젝트의 복잡성이 커질수록 사용 난이도도 올라갑니다.
+  단점2. 복잡하고 무거운 쿼리는 ORM으로 해결이 불가능한 경우가 있습니다.
+
+[2]JPA(Java Persistence API)
+1. JPA는 Java Persistence API의 약자로, 자바 어플리케이션에서 관계형 데이터베이스를 사용하는 방식을 정의한 인터페이스이다. 
+2. JPA는 특정 기능을 하는 라이브러리가 아니다. 마치 일반적인 백엔드 API가 클라이언트가 어떻게 서버를 사용해야 하는지를 정의한 것처럼, JPA 역시 자바 어플리케이션에서 관계형 데이터베이스를 어떻게 사용해야 하는지를 정의하는 한 방법일 뿐이다
+3. JPA를 사용하기 위해서는 JPA를 구현한 Hibernate, EclipseLink, DataNucleus 같은 ORM 프레임워크를 사용해야 한다.
+4. javax.persistence.EntityManager와 같은 인터페이스를 직접 구현한 라이브러리이다. JPA와 Hibernate는 마치 자바의 interface와 해당 interface를 구현한 class와 같은 관계이다. 
+5. JPA의 핵심인 EntityManagerFactory, EntityManager, EntityTransaction을 Hibernate에서는 각각 SessionFactory, Session, Transaction으로 상속받고 각각 Impl로 구현하고 있음을 확인할 수 있다.
+6. Spring으로 개발하면서  EntityManager를 직접 다루지는 않는다. DB에 접근할 필요가 있는 대부분의 상황에서는 Repository를 정의하여 사용한다.  이 Repository가 바로 Spring Data JPA의 핵심이다.
+7. Spring Data JPA는 JPA를 쓰기 편하게 만들어놓은 모듈이다.
+8. Spring Data JPA는 Spring에서 제공하는 모듈 중 하나로, 개발자가 JPA를 더 쉽고 편하게 사용할 수 있도록 도와준다.  이는 JPA를 한 단계 추상화시킨 Repository라는 인터페이스를 제공함으로써 이루어진다. 
+9.  사용자가 Repository 인터페이스에 정해진 규칙대로 메소드를 입력하면, Spring이 알아서 해당 메소드 이름에 적합한 쿼리를 날리는 구현체를 만들어서 Bean으로 등록해준다.
+
+https://suhwan.dev/2019/02/24/jpa-vs-hibernate-vs-spring-data-jpa/
+
+
+[3] 엔티티(entity)- MemDTO
+1.JPA에서 엔티티(Entity)는 데이터베이스의 테이블을 자바 클래스로 표현한 것을 의미한다. 
+2.엔티티 클래스는 데이터베이스 테이블의 구조를 따르며, 각 인스턴스는 테이블의 레코드(행)를 나타낸다다. 
+3.이 클래스는 @Entity 어노테이션을 사용하여 선언됩니다.
+4.엔티티 클래스의 필드는 테이블의 칼럼에 대응하며, 각 필드의 타입은 칼럼의 데이터 타입에 매핑된다다. 
+5.이러한 매핑 정보는 @Column, @Id, @GeneratedValue 등의 어노테이션을 사용하여 표현한다.
+6.엔티티 클래스를 통해 데이터베이스와의 상호작용을 객체 지향적으로 수행할 수 있다. 
+7.즉, SQL 쿼리를 직접 작성하지 않고, 엔티티 객체를 통해 CRUD(Create, Read, Update, Delete) 연산을 수행할 수 있다.
+8.엔티티가 SQL로 변환되는 시점은 EntityManager가 데이터베이스와의 상호작용을 수행하는 시점이다. 
+9.예를 들어, EntityManager.persist(entity) 메서드를 호출하면 해당 엔티티를 데이터베이스에 저장하기 위한 SQL이 생성되고, 이 SQL이 데이터베이스에 전달된다. 
+10.이러한 과정은 보통 트랜잭션이 커밋되는 시점에 발생한다.
+11.또한, EntityManager.find(Class, primaryKey) 메서드를 호출하면 해당 엔티티를 데이터베이스에서 조회하기 위한 SQL이 생성되고, 이 SQL이 데이터베이스에 전달된다.
+12.이 경우, SQL은 메서드 호출 즉시 생성되고 실행됩니다. 이렇게 조회된 결과는 엔티티 객체로 변환되어 반환된다.
+13.따라서, 엔티티가 SQL로 변환되는 시점은 EntityManager가 데이터베이스와의 상호작용을 수행하는 시점이며, 이는 대부분 트랜잭션의 커밋 시점이거나, 엔티티 조회 시점이다.
+
+14."엔티티가 생성된다"는 표현은 일반적으로 새로운 엔티티 객체가 메모리 상에 생성된다는 것을 의미이다. 
+   즉, Java 코드로 새로운 객체를 생성하는 것을 말한다. 
+   예를 들어, new User()라는 코드를 실행하면 새로운 'User' 엔티티가 생성된 것이다.
+15.그러나 이 새로 생성된 엔티티 객체가 데이터베이스에 반영되려면 추가적인 작업이 필요하다. 
+16.엔티티 객체를 데이터베이스에 저장하기 위해서는 EntityManager.persist(entity)와 같은 메서드를 호출해야 한다. 
+17.이 메서드를 호출하면 JPA는 해당 엔티티를 데이터베이스에 저장하기 위한 SQL 문을 생성하고, 이 SQL 문이 데이터베이스에 전달된다. 
+   이 과정을 통해 엔티티 객체는 데이터베이스에 반영된다.
+
+[4] 영속성 켄텍스트
+1.영속성 켄텍스트 정의
+  1)JPA에서 영속성 컨텍스트(Persistence Context)란 엔티티를 영구 저장하는 환경을 말한다. 
+  2)영속성 컨텍스트는 엔티티 매니저를 생성할때 하나 만들어지며 엔티티 매니저(Entity Manager)를 통해 영속성 컨텍스트에 접근하고 관리할 수 있다.
+2.영속성 켄텍스트 특징 
+  1)엔티티의 생명주기 관리: 영속성 컨텍스트는 엔티티의 생명주기 상태를 관리합니다. 엔티티는 비영속(New), 영속(Managed), 준영속(Detached), 삭제(Removed)의 4가지 상태를 가질 수 있습니다. 엔티티 매니저를 통해 엔티티의 상태를 변경할 수 있습니다.
+  2)1차 캐시: 영속성 컨텍스트는 내부에 1차 캐시를 가지고 있습니다. 엔티티 매니저를 통해 조회한 엔티티는 1차 캐시에 저장됩니다. 같은 트랜잭션 안에서는 같은 엔티티를 조회하면 1차 캐시에서 엔티티를 가져옵니다. 따라서 같은 엔티티를 반복해서 조회해도 쿼리가 여러 번 발생하지 않습니다.
+  3)동일성 보장: 1차 캐시로 인해 트랜잭션 안에서는 항상 같은 엔티티 인스턴스를 반환하므로, 엔티티 인스턴스의 동일성(identity)이 보장됩니다.
+  4)트랜잭션 지원 쓰기 지연: 영속성 컨텍스트는 트랜잭션을 지원하는 쓰기 지연이라는 특징을 가지고 있습니다. 트랜잭션 안에서 엔티티 매니저를 통해 엔티티를 저장하거나 삭제하면, 즉시 데이터베이스에 쿼리를 보내지 않고, 트랜잭션을 커밋하는 시점에 모아서 SQL을 실행합니다.
+  5)변경 감지(Dirty Checking): 영속성 컨텍스트는 관리하고 있는 엔티티의 변경을 감지합니다. 트랜잭션을 커밋하는 시점에 엔티티의 변경이 감지되면, 변경된 엔티티에 대한 Update SQL을 생성하여 데이터베이스에 반영합니다.
+  6)지연 로딩(Lazy Loading): 영속성 컨텍스트는 연관된 엔티티를 즉시 로딩(Eager Loading)하는 대신 필요한 시점에 로딩(Lazy Loading)하는 기능을 지원합니다. 이로써 애플리케이션의 성능을 향상시킬 수 있습니다.
+
+[5] 엔티티의 생명주기 4단계- 비영속(New), 영속(Managed), 준영속(Detached), 삭제(Removed)
+ 1.비영속(new/transient): 영속성 컨텍스트와 전혀 관계가 없는 상태
+   MemDTO mem = new MemDTO();
+ 2.영속(managed): 영속성 컨텍스트에 저장된 상태
+   em.persist(mem)
+ 3.준영속(detached): 영속성 컨텍스트에 저장되었다가 분리된 상태
+   ①엔티티를 영속성 컨텍스트에서 분리해 준영속 상태로 만든다.
+     em.detch(mem);
+   ②영속성 컨텍스트를 비워도 관리되던 엔티티는 준영속 상태가 된다.
+     em.clear();
+   ③영속성 콘텍스트를 종료해도 관리되던 엔티티는 준영속 상태가 된다.
+     em.close();
+   
+   ※준영속 상태의 특징
+   ①1차 캐시, 쓰기 지연, 변경 감지, 지연 로딩을 포함한 영속성 컨텍스트가 제공하는 어떠한 기능도 동작하지 않는다.
+   ②식별자 값을 가지고 있다.
+   
+ 4.삭제(removed) : 영속성 컨텍스트에서 삭제된 상태
+   em.remove(mem)
+
+    
+[6] src/main/resources/META-INF/persistence.xml 생성
+    persistence.xml : JPA 환경 설정 정보를 지정하는 XML 파일이다.
+    
+    <!-- persistence-unit 요소의 transaction-type 속성은 RESOURCE_LOCAL, JTA 2가지가 
+		있다. JTA는 Java Transaction API의 줄임말로, 엔터프라이즈 환경에서 주로 사용하는데 직접 엔티티 매니저를 생성하지 
+		않고 컨테이너가 대신 생성해서 넘겨주는 엔티티 매니저를 사용하며 트랜잭션 역시 컨테이너가 관리한다. 트랜잭션을 직접 관리할 경우는 
+		RESOURCE_LOCAL , 컨테이너가 관리할 것이라면 JTA 로 지정하면 된다. -->
+	<persistence-unit name="myjpa"
+		transaction-type="RESOURCE_LOCAL">
+		<class>part01.MemDTO</class>
+		<!-- exclude-unlisted-classes는 persistence.xml에 명시적으로 나열되지 않은 클래스를 JPA에서 
+			제외할지 여부를 설정합니다. true로 설정하면, persistence.xml에 나열되지 않은 클래스는 JPA에서 관리되지 않습니다. -->
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<properties>
+			<!-- jakarta.persistence.jdbc.driver는 JDBC 드라이버의 클래스 이름을 설정합니다. 이 설정은 
+				JPA가 데이터베이스 연결을 생성하기 위해 사용합니다. com.mysql.cj.jdbc.Driver는 MySQL 데이터베이스를 사용하는 
+				JDBC 드라이버의 클래스 이름입니다. -->
+			<property name="jakarta.persistence.jdbc.driver"
+				value="com.mysql.cj.jdbc.Driver" />
+			<!-- jakarta.persistence.jdbc.url는 데이터베이스 연결 문자열을 설정합니다. 이 설정은 JPA가 데이터베이스에 
+				연결하기 위해 사용합니다. jdbc:mysql://localhost/mywork?characterEncoding=utf8는 localhost에 
+				위치한 mywork라는 이름의 MySQL 데이터베이스에 연결하는데 사용되며, 문자 인코딩으로는 utf8을 사용합니다. -->
+			<property name="jakarta.persistence.jdbc.url"
+				value="jdbc:mysql://localhost/mywork?characterEncoding=utf8" />
+			<!-- jakarta.persistence.jdbc.user는 데이터베이스 연결시 사용할 사용자 이름을 설정합니다. 이 설정은 
+				JPA가 데이터베이스에 연결하기 위해 사용합니다. -->
+			<property name="jakarta.persistence.jdbc.user" value="root" />
+			<!-- jakarta.persistence.jdbc.password는 데이터베이스 연결시 사용할 비밀번호를 설정합니다. 이 
+				설정은 JPA가 데이터베이스에 연결하기 위해 사용합니다. -->
+			<property name="jakarta.persistence.jdbc.password"
+				value="1234" />
+
+			<!-- hibernate.dialect는 사용하는 데이터베이스의 SQL 방언을 설정합니다. SQL은 표준화된 언어이지만, 각 
+				데이터베이스 제품마다 독특한 기능이나 문법이 있습니다. 이러한 차이를 "방언(dialect)"라고 합니다. 이 설정은 Hibernate가 
+				데이터베이스에 맞는 SQL 쿼리를 생성하는 데 사용합니다. -->
+			<property name="hibernate.dialect"
+				value="org.hibernate.dialect.MySQLDialect" />
+
+			<!-- hibernate.hikari.poolName는 HikariCP 커넥션 풀의 이름을 설정합니다. 이 부분은 개발자가 
+				원하는 임의의 문자열로 설정할 수 있습니다. 예를 들어, value="myPool"로 설정하면 커넥션 풀의 이름이 "myPool"이 
+				됩니다. 이 설정은 선택적입니다. 만약 설정하지 않으면, HikariCP는 자동으로 커넥션 풀에 이름을 할당합니다.커넥션 풀은 데이터베이스 
+				연결을 재사용하여 성능을 향상시키는 역할을 합니다. -->
+			<property name="hibernate.hikari.poolName" value="pool" />
+
+			<!-- hibernate.hikari.maximumPoolSize는 HikariCP 커넥션 풀의 최대 크기를 설정합니다. 이 
+				값은 커넥션 풀이 유지할 수 있는 최대 데이터베이스 연결 수를 나타냅니다. -->
+			<property name="hibernate.hikari.maximumPoolSize" value="10" />
+
+			<!-- hibernate.hikari.minimumIdle는 HikariCP 커넥션 풀의 최소 유휴 연결 수를 설정합니다. 
+				이 값은 커넥션 풀이 유지하는 최소한의 유휴 상태의 데이터베이스 연결 수를 나타냅니다. -->
+			<property name="hibernate.hikari.minimumIdle" value="10" />
+
+			<!-- hibernate.hikari.connectionTimeout은 데이터베이스 연결을 얻기 위해 기다리는 시간을 설정합니다. 
+				이 값은 밀리세컨드 단위이며, 이 시간 내에 연결을 얻지 못하면 SQLException이 발생합니다. -->
+			<property name="hibernate.hikari.connectionTimeout"
+				value="1000" />
+		</properties>
+	</persistence-unit>
+    
+[7] pom.xml에 library 등록
+  <!-- hibernate-core는 Hibernate ORM(Object-Relational Mapping)의 핵심 라이브러리입니다.
+     이 라이브러리는 객체와 관계형 데이터베이스 테이블 간의 매핑을 관리하고, 
+     SQL 쿼리를 대신하여 객체 기반 쿼리를 작성할 수 있게 해줍니다.
+     또한, 트랜잭션 관리, 캐싱 등의 기능도 제공합니다. -->
+	<dependency>
+	    <groupId>org.hibernate</groupId>
+	    <artifactId>hibernate-core</artifactId>
+	    <version>${hiberate.version}</version>
+	</dependency>
+	
+	<!-- hibernate-hikaricp는 Hibernate에서 HikariCP 커넥션 풀을 사용할 수 있게 해주는 라이브러리입니다.
+	     HikariCP는 고성능 JDBC 커넥션 풀 라이브러리로, 데이터베이스 연결을 효율적으로 재사용하여 성능을 향상시킵니다.
+	     이 라이브러리를 사용하면, Hibernate를 통해 데이터베이스 연결을 관리할 때 HikariCP를 사용할 수 있습니다. -->
+	<dependency>
+	    <groupId>org.hibernate</groupId>
+	    <artifactId>hibernate-hikaricp</artifactId>
+	    <version>${hiberate.version}</version>
+	</dependency>
+	
+	<!-- lombok은 Java 코드를 간결하게 만들어주는 라이브러리입니다.
+     이 라이브러리를 사용하면 getter, setter, toString, equals, hashCode 등의 메서드를
+     직접 작성하지 않고, 어노테이션을 사용하여 자동으로 생성할 수 있습니다.
+     이를 통해 코드의 중복을 줄이고, 가독성을 향상시킬 수 있습니다.
+
+     version은 사용하는 Lombok 라이브러리의 버전을 나타냅니다.
+     scope는 라이브러리의 범위를 설정합니다.
+     "provided"는 라이브러리가 실행 시간에 제공될 것이라는 것을 나타냅니다.
+     즉, 컴파일 시에는 필요하지만, 실행 시에는 필요하지 않습니다.
+     Lombok은 컴파일 시에 코드를 생성하고, 실행 시에는 필요하지 않으므로 "provided"로 설정합니다. -->
+	<dependency>
+	    <groupId>org.projectlombok</groupId>
+	    <artifactId>lombok</artifactId>
+	    <version>1.18.22</version>
+	    <scope>provided</scope>
+	</dependency>
+	
+	<!-- logback-core는 Logback 로깅 프레임워크의 핵심 모듈입니다.
+	     이 라이브러리는 로그 메시지를 생성하고, 필터링하며, 출력하는 기능을 제공합니다.
+	     개발자는 이 라이브러리를 사용하여 애플리케이션의 로그 메시지를 관리하고, 로그 메시지를 기록할 수 있습니다. -->
+	<dependency>
+	    <groupId>ch.qos.logback</groupId>
+	    <artifactId>logback-core</artifactId>
+	    <version>1.4.6</version>
+	</dependency>
+	
+	<!-- logback-classic은 Logback 로깅 프레임워크의 확장 모듈로, SLF4J API를 구현합니다.
+	     이 라이브러리는 SLF4J API를 통해 로그 메시지를 생성하고, 필터링하며, 출력하는 기능을 제공합니다.
+	     이를 통해, 개발자는 SLF4J API를 사용하여 로그 메시지를 관리하고, 로그 메시지를 기록할 수 있습니다.
+	     logback-classic는 logback-core를 필요로 하므로, logback-core 라이브러리도 함께 필요합니다. -->
+	<dependency>
+	    <groupId>ch.qos.logback</groupId>
+	    <artifactId>logback-classic</artifactId>
+	    <version>1.4.6</version>
+	</dependency>
+	
+[8] JPA에서는 엔티티를 정의하고, 매핑하기 위해 여러 가지 어노테이션을 제공
+1.@Entity: 클래스가 엔티티임을 지정한다. 이 어노테이션을 사용하면 JPA가 관리하는 엔티티로 등록되며, 데이터베이스 테이블과 매핑된다.
+2.@Table: 엔티티가 매핑될 테이블을 지정한다. 속성으로는 name(테이블 이름), schema(스키마 이름), catalog(카탈로그 이름), uniqueConstraints(테이블의 유니크 제약 조건) 등이 있다.
+3.@Id: 엔티티의 식별자(기본 키)를 지정한다. 모든 엔티티는 반드시 하나의 식별자를 가지고 있어야 합니다.
+4.@GeneratedValue: 식별자(기본키)의 생성 전략을 지정한다. AUTO, IDENTITY, SEQUENCE, TABLE 등의 전략을 선택할 수 있다.
+5.@Column: 필드를 데이터베이스 테이블의 칼럼과 매핑한다. 속성으로는 name(칼럼 이름), nullable(Null 허용 여부), length(칼럼의 길이), unique(유니크 제약 조건) 등이 있다.
+6.@Transient: 필드를 비영속 필드로 지정한다. 이 어노테이션을 사용한 필드는 데이터베이스에 매핑되지 않는다.
+7.@OneToOne, @OneToMany, @ManyToOne, @ManyToMany: 엔티티 간의 관계를 매핑합니다. 각각 1:1, 1:N, N:1, N:N 관계를 나타낸다.
+8.@JoinColumn: 외래 키를 매핑할 때 사용한다. 외래 키의 이름, Null 허용 여부, 외래 키 칼럼에 대한 유니크 제약 조건 등을 지정할 수 있다.
+9.@MappedSuperclass: 공통 매핑 정보가 필요할 때 사용하는 어노테이션이다. 이 어노테이션을 사용한 클래스는 엔티티가 아니며, 테이블과 매핑되지 않는다. 대신 이 클래스를 상속받는 엔티티가 공통 매핑 정보를 상속받을 수 있다.
+
+[9] @GeneratedValue 어노테이션
+ @GeneratedValue 어노테이션은 엔티티의 기본 키를 자동으로 생성하기 위한 전략을 명시한다. 이 어노테이션은 @Id 어노테이션과 함께 사용되며, 다양한 전략을 선택할 수 있다.
+1.AUTO: 기본 전략으로, 특정 DB에 맞는 ID 생성 전략을 자동으로 선택한다. 예를 들어, MySQL의 경우 IDENTITY 전략을, Oracle의 경우 SEQUENCE 전략을 선택한다.
+2.IDENTITY: 데이터베이스의 IDENTITY 칼럼을 이용한다. 즉, 데이터베이스에 값이 저장될 때마다 자동으로 증가하는 키를 생성한다.
+3.SEQUENCE: 데이터베이스의 특별한 오브젝트인 시퀀스를 이용하여 기본 키를 생성한다. @SequenceGenerator 어노테이션과 함께 사용하여 시퀀스 이름 등의 속성을 설정할 수 있다.
+4.TABLE: 키 생성 전용 테이블을 하나 만들고, 해당 테이블을 사용하여 기본 키를 생성한다. @TableGenerator 어노테이션과 함께 사용하여 테이블 이름, 칼럼 이름 등의 속성을 설정할 수 있다.
+	ex) mysql 데이터베이스에서 사용
+	@Entity
+	public class MemDTO {
+	    @Id
+	    @GeneratedValue(strategy = GenerationType.AUTO)
+	    private int num;	
+	    // ...
+	}
+
+   ex) oracle, PostgreSQL, DB2, H2 데이터베이스에서 사용
+	@Entity 
+	@SequenceGenerator( 
+	     name = "MEMBER_SEQ_GENERATOR", 
+	     sequenceName = "mem_num_seq", //매핑할 데이터베이스 시퀀스 이름
+	     initialValue = 1, allocationSize = 1) 
+	public class Member { 
+	     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE, 
+	     generator = "MEMBER_SEQ_GENERATOR") 
+	     private Long id; 
+	 
+	 }
+
