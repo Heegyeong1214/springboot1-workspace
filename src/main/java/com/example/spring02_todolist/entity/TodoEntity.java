@@ -27,6 +27,7 @@ public class TodoEntity {
 	//변수 선언
 	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "todo_seq_generator")
 	//Auto: 현재 개발자에 있는 DB에 맞게,(사용지양),IDENTITY는 MySQL로 사용 //generator는 시퀀스 명 
+	//allocationSize=1 ; 
 	@SequenceGenerator(name="todo_seq_generator", sequenceName="todotbl_id_seq", allocationSize=1)
 	private int id; //insert할 때 시퀀스 값을 넣어줌, Column 이름과 동일 (오라클일때)  
 	private int completed;
